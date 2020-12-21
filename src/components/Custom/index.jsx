@@ -1,12 +1,15 @@
-import React from 'react'
-import { View } from '@tarojs/components'
+import React, { useMemo } from 'react'
+import { View, Text } from '@tarojs/components'
 import appInfo from '@/utils/appInfo'
+import { getCurrentPages, navigateBack } from '@tarojs/taro'
 
-function Layout({
+function Custom({
   bgColorClass = 'bg-gradual-red',
   isContent,
+  isShowBack,
   children
 }) {
+  const pageRouterLength = useMemo(() => getCurrentPages(), [])
   const { navigationBarHeight, statusBarHeight } = appInfo.systemInfo
   return (
     <View 
@@ -22,6 +25,11 @@ function Layout({
           paddingTop: statusBarHeight + 'px'
         }}
       >
+        {isShowBack && pageRouterLength.length > 1 && (
+          <View className='action' onClick={() => navigateBack()}>
+            <Text className='cuIcon-back'></Text>
+          </View>
+        )}
         {isContent ? (
           <View
             className='content'
@@ -33,4 +41,4 @@ function Layout({
   )
 }
 
-export default Layout
+export default React.memo(Custom)

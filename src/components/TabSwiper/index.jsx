@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import {
   View,
   Swiper,
@@ -6,6 +6,8 @@ import {
 } from '@tarojs/components'
 import SegmentedControl from '../SegmentedControl'
 import GoodsList from '../GoodsList'
+// eslint-disable-next-line import/first
+import appInfo from '@/utils/appInfo'
 import './tabSwiper.scss'
 
 function TabSwiper({
@@ -13,8 +15,14 @@ function TabSwiper({
   materialId,
   setMaterialId,
 }) {
+  const { navigationBarHeight } = appInfo.systemInfo
+  const currentSelect = useMemo(
+    () => tabs.findIndex(item => item.material_id === materialId), 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [materialId]
+  )
   return (
-    <View className='main'>
+    <View className='main' style={{ height: `calc(100% - ${navigationBarHeight}px)` }}>
       <SegmentedControl
         className='control'
         tabs={tabs}
@@ -22,9 +30,9 @@ function TabSwiper({
         setMaterialId={val => setMaterialId(val)}
       />
       <Swiper
-        current={tabs.findIndex(item => item.material_id === materialId)}
+        current={currentSelect}
         skipHiddenItemLayout
-        onChange={event => {
+        onAnimationFinish={event => {
           const { current } = event.detail
           setMaterialId(tabs[current].material_id)
         }}

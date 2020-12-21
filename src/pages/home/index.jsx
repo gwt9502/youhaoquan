@@ -1,9 +1,10 @@
+/* eslint-disable import/first */
 import React, { useEffect, useState } from 'react'
 import Taro from '@tarojs/taro'
 import { http } from '../../utils/http'
 import TabSwiper from '@/components/TabSwiper'
-import Layout from '@/components/Layout'
-import { View, Input } from '@tarojs/components'
+import Custom from '@/components/Custom'
+import Search from '@/components/Search'
 
 function Home() {
   const [tabs, setTabs] = useState([])
@@ -24,16 +25,13 @@ function Home() {
   }
   return (
     <React.Fragment>
-      <Layout>
-        <View className='search-form radius' onClick={goSearchPage}>
-          <Input
-            disabled
-            className='cuIcon-search'
-            confirmType='search'
-            placeholder='搜索优惠券'
-          />
-        </View>
-      </Layout>
+      <Custom>
+        <Search
+          disabled
+          placeholder='点击搜索优惠券'
+          onClick={goSearchPage}
+        />
+      </Custom>
       <TabSwiper
         tabs={tabs}
         materialId={materialId}
@@ -43,4 +41,4 @@ function Home() {
   )
 }
 
-export default Home
+export default React.memo(Home)

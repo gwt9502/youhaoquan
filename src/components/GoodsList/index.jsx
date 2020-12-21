@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Taro from '@tarojs/taro'
-import { View } from '@tarojs/components'
 import ScrollView from '../ScrollView'
-import GoodsItem from '../GoodsItem'
-import Footer from '../Footer'
 import GoodsListModel from '../../models/GoodsList'
 
 function GoodsList({
@@ -15,9 +12,8 @@ function GoodsList({
     items: [],
   })
 
-  const GOODSLISTMODEL = new GoodsListModel(materialId)
-
   useEffect(() => {
+    const GOODSLISTMODEL = new GoodsListModel(materialId)
     if (isVisible) {
       const { init } = GOODSLISTMODEL
       if (init) {
@@ -33,6 +29,7 @@ function GoodsList({
   }, [materialId])
 
   const setData = () => {
+    const GOODSLISTMODEL = new GoodsListModel(materialId)
     const { hasMore, items } = GOODSLISTMODEL
     setDataInfo({
       hasMore,
@@ -41,6 +38,7 @@ function GoodsList({
   }
 
   const refreshData = () => {
+    const GOODSLISTMODEL = new GoodsListModel(materialId)
     GOODSLISTMODEL.refresh()
     .then(() => {
       setData()
@@ -48,16 +46,10 @@ function GoodsList({
     })
   }
   return (
-    <ScrollView>
-      <View className='cu-card article no-card'>
-        {dataInfo.items.map(goods => <GoodsItem key={goods.item_id} {...goods} />)}
-      </View>
-      <Footer
-        hasMore={dataInfo.hasMore}
-        itemsLength={dataInfo.items.length}
-      />
-    </ScrollView>
+    <ScrollView
+      dataInfo={dataInfo}
+    />
   )
 }
 
-export default GoodsList
+export default React.memo(GoodsList)

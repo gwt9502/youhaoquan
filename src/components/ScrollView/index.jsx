@@ -1,12 +1,12 @@
 import React from 'react'
-import {
-  ScrollView,
-} from '@tarojs/components'
+import { ScrollView, View } from '@tarojs/components'
+import GoodsItem from '../GoodsItem'
+import Footer from '../Footer'
 
 import './scrollView.scss'
 
 function ScrollViewCom({
-  children
+  dataInfo
 }) {
   return (
     <ScrollView
@@ -20,9 +20,15 @@ function ScrollViewCom({
       }}
       className='scroll-container'
     >
-      {children}
+      <View className='cu-card article no-card'>
+        {dataInfo.items.map(goods => <GoodsItem key={goods.item_id} {...goods} />)}
+      </View>
+      <Footer
+        hasMore={dataInfo.hasMore}
+        itemsLength={dataInfo.items.length}
+      />
     </ScrollView>
   )
 }
 
-export default ScrollViewCom
+export default React.memo(ScrollViewCom)

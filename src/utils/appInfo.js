@@ -6,6 +6,7 @@ class AppInfo {
     const info = Taro.getSystemInfoSync()
     this.systemInfo = info
     info.navigationBarHeight = info.statusBarHeight + (this.isAndroid ? 50 : 45)
+    info.phoneVersion = info.system.split(' ')[1]
   }
 
   get systemInfo() {
@@ -17,12 +18,17 @@ class AppInfo {
   }
 
   get isAndroid() {
-    return this.systemInfo.platform === 'android'
+    console.log(123)
+    return this._systemInfo.platform === 'android'
   }
 
   get isIos() {
-    return this.systemInfo.platform === 'ios'
+    return this._systemInfo.platform === 'ios'
   }
+
+  // get isSupportWebp() {
+  //   if (this.isIos )
+  // }
 }
 
 export default new AppInfo()
