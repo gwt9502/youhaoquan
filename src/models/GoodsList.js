@@ -11,6 +11,7 @@ class GoodsList {
       page_size: 20,
       material_id: materialId
     }
+    this.isRequestPadding = false
     this.init = false
     const cache = new Cache('goodsList_', false)
     this.cache = cache
@@ -29,6 +30,8 @@ class GoodsList {
   }
 
   httpSend(isRefresh = false) {
+    if (this.isRequestPadding) return
+    this.isRequestPadding = true
     return new Promise((resolve, reject) => {
       if (isRefresh) {
         this.moreParams.page_no = 1
@@ -51,6 +54,9 @@ class GoodsList {
         resolve()
       })
       .catch(() => reject())
+      .finally(() => {
+        this.isRequestPadding = false
+      })
     })
   }
 

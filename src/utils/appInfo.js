@@ -18,7 +18,6 @@ class AppInfo {
   }
 
   get isAndroid() {
-    console.log(123)
     return this._systemInfo.platform === 'android'
   }
 

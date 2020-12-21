@@ -6,8 +6,6 @@ import {
 } from '@tarojs/components'
 import SegmentedControl from '../SegmentedControl'
 import GoodsList from '../GoodsList'
-// eslint-disable-next-line import/first
-import appInfo from '@/utils/appInfo'
 import './tabSwiper.scss'
 
 function TabSwiper({
@@ -15,14 +13,13 @@ function TabSwiper({
   materialId,
   setMaterialId,
 }) {
-  const { navigationBarHeight } = appInfo.systemInfo
   const currentSelect = useMemo(
     () => tabs.findIndex(item => item.material_id === materialId), 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [materialId]
   )
   return (
-    <View className='main' style={{ height: `calc(100% - ${navigationBarHeight}px)` }}>
+    <View className='main'>
       <SegmentedControl
         className='control'
         tabs={tabs}
@@ -32,7 +29,7 @@ function TabSwiper({
       <Swiper
         current={currentSelect}
         skipHiddenItemLayout
-        onAnimationFinish={event => {
+        onChange={event => {
           const { current } = event.detail
           setMaterialId(tabs[current].material_id)
         }}

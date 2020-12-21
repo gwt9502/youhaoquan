@@ -5,6 +5,7 @@ import { http } from '../../utils/http'
 import TabSwiper from '@/components/TabSwiper'
 import Custom from '@/components/Custom'
 import Search from '@/components/Search'
+import Layout from '@/components/Layout'
 
 function Home() {
   const [tabs, setTabs] = useState([])
@@ -24,20 +25,21 @@ function Home() {
     })
   }
   return (
-    <React.Fragment>
-      <Custom>
+    <Layout
+      customContent={
         <Search
           disabled
           placeholder='点击搜索优惠券'
           onClick={goSearchPage}
         />
-      </Custom>
+      }
+    >
       <TabSwiper
         tabs={tabs}
         materialId={materialId}
         setMaterialId={val => setMaterialId(val)}
       />
-    </React.Fragment>
+    </Layout>
   )
 }
 

@@ -6,7 +6,8 @@ import Footer from '../Footer'
 import './scrollView.scss'
 
 function ScrollViewCom({
-  dataInfo
+  dataInfo,
+  onScrollToLower
 }) {
   return (
     <ScrollView
@@ -15,9 +16,7 @@ function ScrollViewCom({
       onScrollToUpper={() => {
         console.log('onScrollToUpper')
       }}
-      onScrollToLower={() => {
-        console.log('onScrollToLower')
-      }}
+      onScrollToLower={onScrollToLower}
       className='scroll-container'
     >
       <View className='cu-card article no-card'>

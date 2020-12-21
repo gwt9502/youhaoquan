@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import Taro from '@tarojs/taro'
 import ScrollView from '../ScrollView'
 import GoodsListModel from '../../models/GoodsList'
@@ -12,8 +12,10 @@ function GoodsList({
     items: [],
   })
 
+  const GOODSLISTMODEL = new GoodsListModel(materialId)
+
   useEffect(() => {
-    const GOODSLISTMODEL = new GoodsListModel(materialId)
+    
     if (isVisible) {
       const { init } = GOODSLISTMODEL
       if (init) {
@@ -29,7 +31,6 @@ function GoodsList({
   }, [materialId])
 
   const setData = () => {
-    const GOODSLISTMODEL = new GoodsListModel(materialId)
     const { hasMore, items } = GOODSLISTMODEL
     setDataInfo({
       hasMore,
@@ -38,7 +39,6 @@ function GoodsList({
   }
 
   const refreshData = () => {
-    const GOODSLISTMODEL = new GoodsListModel(materialId)
     GOODSLISTMODEL.refresh()
     .then(() => {
       setData()
@@ -47,6 +47,7 @@ function GoodsList({
   }
   return (
     <ScrollView
+      onScrollToLower={() => GOODSLISTMODEL.loadMore()}
       dataInfo={dataInfo}
     />
   )

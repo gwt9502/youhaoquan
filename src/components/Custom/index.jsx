@@ -7,37 +7,40 @@ function Custom({
   bgColorClass = 'bg-gradual-red',
   isContent,
   isShowBack,
-  children
+  customContent,
 }) {
   const pageRouterLength = useMemo(() => getCurrentPages(), [])
   const { navigationBarHeight, statusBarHeight } = appInfo.systemInfo
   return (
-    <View 
-      className='cu-custom'
-      style={{
-        height: navigationBarHeight + 'px',
-      }}
-    >
-      <View
-        className={`'cu-bar fixed' ${bgColorClass}`}
+    <View className='flex'>
+      <View 
+        className='cu-custom'
         style={{
           height: navigationBarHeight + 'px',
-          paddingTop: statusBarHeight + 'px'
         }}
       >
-        {isShowBack && pageRouterLength.length > 1 && (
-          <View className='action' onClick={() => navigateBack()}>
-            <Text className='cuIcon-back'></Text>
-          </View>
-        )}
-        {isContent ? (
-          <View
-            className='content'
-            style={{ top: statusBarHeight + 'px' }}
-          >{children}</View>
-        ) : children}
+        <View
+          className={`'cu-bar fixed' ${bgColorClass}`}
+          style={{
+            height: navigationBarHeight + 'px',
+            paddingTop: statusBarHeight + 'px'
+          }}
+        >
+          {isShowBack && pageRouterLength.length > 1 && (
+            <View className='action' onClick={() => navigateBack()}>
+              <Text className='cuIcon-back'></Text>
+            </View>
+          )}
+          {isContent ? (
+            <View
+              className='content'
+              style={{ top: statusBarHeight + 'px' }}
+            >{customContent}</View>
+          ) : customContent}
+        </View>
       </View>
     </View>
+    
   )
 }
 
