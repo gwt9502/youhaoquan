@@ -1,9 +1,7 @@
-/* eslint-disable import/first */
 import React, { useEffect, useState } from 'react'
 import Taro from '@tarojs/taro'
 import { http } from '../../utils/http'
 import TabSwiper from '@/components/TabSwiper'
-import Custom from '@/components/Custom'
 import Search from '@/components/Search'
 import Layout from '@/components/Layout'
 

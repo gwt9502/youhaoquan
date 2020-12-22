@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import Taro from '@tarojs/taro'
 import ScrollView from '../ScrollView'
 import GoodsListModel from '../../models/GoodsList'
@@ -15,7 +15,6 @@ function GoodsList({
   const GOODSLISTMODEL = new GoodsListModel(materialId)
 
   useEffect(() => {
-    
     if (isVisible) {
       const { init } = GOODSLISTMODEL
       if (init) {
@@ -24,7 +23,7 @@ function GoodsList({
         Taro.showLoading({
           title: '加载中...'
         })
-        refreshData()
+        refreshData(true)
       }
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -38,16 +37,21 @@ function GoodsList({
     })
   }
 
-  const refreshData = () => {
-    GOODSLISTMODEL.refresh()
+  const refreshData = useCallback(isRefresh => {
+    const { isRequestPadding } = GOODSLISTMODEL
+    if (isRequestPadding) return
+    const fnName = isRefresh ? 'refresh' : 'loadMore'
+    GOODSLISTMODEL[fnName]()
     .then(() => {
       setData()
       Taro.hideLoading()
     })
-  }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [materialId])
   return (
     <ScrollView
-      onScrollToLower={() => GOODSLISTMODEL.loadMore()}
+      onScrollToUpper={() => refreshData(true)}
+      onScrollToLower={() => refreshData()}
       dataInfo={dataInfo}
     />
   )

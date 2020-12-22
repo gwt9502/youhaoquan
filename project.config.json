@@ -39,5 +39,25 @@
   "compileType": "miniprogram",
   "simulatorType": "wechat",
   "simulatorPluginLibVersion": {},
-  "condition": {}
+  "condition": {
+    "plugin": {
+      "list": []
+    },
+    "game": {
+      "list": []
+    },
+    "gamePlugin": {
+      "list": []
+    },
+    "miniprogram": {
+      "list": [
+        {
+          "name": "详情页面",
+          "pathName": "pages/detail/index",
+          "query": "itemId=614385291547&__key_=16086398071861",
+          "scene": null
+        }
+      ]
+    }
+  }
 }

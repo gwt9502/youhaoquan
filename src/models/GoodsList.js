@@ -1,11 +1,12 @@
 import Cache from '../utils/cache'
 import { http } from '../utils/http'
-
+import Taro from '@tarojs/taro'
+import GoodsListState from '../state/GoodsListState'
 class GoodsList {
   constructor(materialId) {
     this.materialId = materialId
     this.items = []
-    this.hasMore = false
+    this.hasMore = true
     this.moreParams = {
       page_no: 1,
       page_size: 20,
@@ -30,18 +31,22 @@ class GoodsList {
   }
 
   httpSend(isRefresh = false) {
-    if (this.isRequestPadding) return
     this.isRequestPadding = true
+    if (!this.hasMore) return
+    if (this.items.length) {
+      Taro.vibrateShort()
+    }
+    if (isRefresh) {
+      this.moreParams.page_no = 1
+    }
     return new Promise((resolve, reject) => {
-      if (isRefresh) {
-        this.moreParams.page_no = 1
-      }
       http({
         url: '/getGoodsList',
         data: this.moreParams
       })
       .then(res => {
         const { items = [], hasMore } = res
+        GoodsListState.setGoodsList(items)
         this.moreParams.page_no++
         this.items = isRefresh ? items : [...this.items, ...items]
         this.hasMore = hasMore
@@ -50,12 +55,13 @@ class GoodsList {
           hasMore: this.hasMore,
           moreParams: this.moreParams
         })
+        this.isRequestPadding = false
         this.init = true
         resolve()
       })
-      .catch(() => reject())
-      .finally(() => {
+      .catch(() => {
         this.isRequestPadding = false
+        reject()
       })
     })
   }
