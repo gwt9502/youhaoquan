@@ -2,34 +2,26 @@ import React, { useEffect, useState } from 'react'
 import Taro from '@tarojs/taro'
 import { http } from '../../utils/http'
 import TabSwiper from '@/components/TabSwiper'
-import Search from '@/components/Search'
 import Layout from '@/components/Layout'
+import { View } from '@tarojs/components'
 
-function Discover() {
+function Hot() {
   const [tabs, setTabs] = useState([])
   const [materialId, setMaterialId] = useState('')
   useEffect(() => {
     http({
-      url: '/getHomeConfig'
+      url: '/getDEQMConfig'
     })
     .then(data => {
       setTabs(data)
       setMaterialId(data[0]?.material_id)
     })
   }, [])
-  const goSearchPage = () => {
-    Taro.navigateTo({
-      url: '/pages/search/index'
-    })
-  }
   return (
     <Layout
+      isContent
       customContent={
-        <Search
-          disabled
-          placeholder='点击搜索优惠券'
-          onClick={goSearchPage}
-        />
+        <View className='text-blod text-center text-lg'>大额券码</View>
       }
     >
       <TabSwiper
@@ -41,4 +33,4 @@ function Discover() {
   )
 }
 
-export default React.memo(Discover)
+export default React.memo(Hot)

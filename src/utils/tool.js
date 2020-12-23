@@ -1,3 +1,5 @@
+import appInfo from "./appInfo"
+
 /**
  * 计算销量
  * @param {number}} val 
@@ -36,6 +38,16 @@ export const versionCompare = (v1, v2) => {
       return false
     }
   }
+}
+
+export const tranformImg = src => {
+  const { isIos, isAndroid, systemInfo } = appInfo
+  if (isIos && systemInfo.phoneVersion < 14 || isAndroid && systemInfo.phoneVersion < 4) {
+    return src
+  }
+  const { width } = systemInfo.safeArea
+  const newWidth = String(width).substr(0, 1) + '00'
+  return `${src}_${newWidth}x${newWidth}_.webp`
 }
 // export const filterImg = src => {
 //   if ()

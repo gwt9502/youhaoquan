@@ -5,12 +5,12 @@ import TabSwiper from '@/components/TabSwiper'
 import Search from '@/components/Search'
 import Layout from '@/components/Layout'
 
-function Discover() {
+function Home() {
   const [tabs, setTabs] = useState([])
   const [materialId, setMaterialId] = useState('')
   useEffect(() => {
     http({
-      url: '/getHomeConfig'
+      url: '/getHQZBConfig'
     })
     .then(data => {
       setTabs(data)
@@ -41,4 +41,4 @@ function Discover() {
   )
 }
 
-export default React.memo(Discover)
+export default React.memo(Home)

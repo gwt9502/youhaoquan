@@ -4,7 +4,7 @@
   "description": "为你省小程序",
   "appid": "wx9d4138e38f80fb44",
   "setting": {
-    "urlCheck": false,
+    "urlCheck": true,
     "es6": false,
     "enhance": false,
     "postcss": false,
@@ -54,6 +54,12 @@
         {
           "name": "详情页面",
           "pathName": "pages/detail/index",
+          "query": "itemId=614385291547&__key_=16086398071861",
+          "scene": null
+        },
+        {
+          "name": "pages/search/index",
+          "pathName": "pages/search/index",
           "query": "itemId=614385291547&__key_=16086398071861",
           "scene": null
         }

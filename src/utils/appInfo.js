@@ -6,7 +6,7 @@ class AppInfo {
     const info = Taro.getSystemInfoSync()
     this.systemInfo = info
     info.navigationBarHeight = info.statusBarHeight + (this.isAndroid ? 50 : 45)
-    info.phoneVersion = info.system.split(' ')[1]
+    info.phoneVersion = info.version.split('.')[0]
   }
 
   get systemInfo() {

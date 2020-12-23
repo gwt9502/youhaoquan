@@ -1,2 +1,29 @@
 @import './colorui/main.wxss';
 @import './colorui/icon.wxss';
+
+@mixin ellipsis($num) {
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: $num;
+  -webkit-box-orient: vertical
+}
+
+.ellipsis--l1{
+  @include ellipsis(1)
+}
+
+.ellipsis--l2{
+  @include ellipsis(2)
+}
+
+.img-bg{
+  background: url('https://yhq.gwt9502.top/yhq/img/imgLoading.svg');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.text-delete{
+  text-decoration: line-through
+}

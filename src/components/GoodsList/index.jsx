@@ -53,6 +53,7 @@ function GoodsList({
       onScrollToUpper={() => refreshData(true)}
       onScrollToLower={() => refreshData()}
       dataInfo={dataInfo}
+      materialId={materialId}
     />
   )
 }

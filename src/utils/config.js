@@ -6,7 +6,7 @@ const BASE_URL_PATH = {
   production: 'https://yhq.gwt9502.top/api'
 }
 
-const appEnv = ENV_DEVELOPMENT
+const appEnv = ENV_PRODUCTION
 
 const apiPath = BASE_URL_PATH[appEnv]
 

@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react'
-import { View } from '@tarojs/components'
+import React, { useState, useEffect, useRef } from 'react'
+import { View, Text, Image } from '@tarojs/components'
 import Layout from '@/components/Layout'
 import SearchCom from '@/components/Search'
 import ScrollView from '@/components/ScrollView'
 import { http } from '@/utils/http'
-import Taro from '@tarojs/taro'
+import Taro, { pageScrollTo } from '@tarojs/taro'
+import { IMG_BASE_PATH } from '../../utils/config'
 
+let IS_REQUEST_PADDING = false
 const SEARCH_TYPES = [
   {
     name: '综合',
@@ -32,22 +34,31 @@ function Search() {
     items: [],
     hasMore: true,
   })
+  const { hasMore, items } = dataInfo
+  const { page_no, q, sort } = query
+  const SCROLLVIEWREF = useRef(null)
   useEffect(() => {
-    const { page_no, q } = query
-    if (!q) return
-    const { items } = dataInfo
-    if (!items.length && page_no === 1) {
+    if (!q || IS_REQUEST_PADDING || !hasMore) return
+    if (page_no === 1) {
       Taro.showLoading({
         title: '加载中...'
       })
     }
+    IS_REQUEST_PADDING = true
     http({
       url: '/searchGoodsList',
       data: query
     })
     .then(res => {
-      setDataInfo(res)
+      IS_REQUEST_PADDING = false
+      setDataInfo({
+        items: page_no === 1 ? res.items : [...items, ...res.items],
+        hasMore: res.hasMore
+      })
       Taro.hideLoading()
+    })
+    .catch(() => {
+      IS_REQUEST_PADDING = false
     })
   }, [query])
   return (
@@ -62,31 +73,65 @@ function Search() {
             if (value.trim()) {
               setQuery({
                 ...query,
-                q: value.trim()
+                q: value.trim(),
+                page_no: 1
               })
             }
           }}
         />
       }
     >
-      <View className='grid col-3 text-center bg-white solid-bottom'>
-        {SEARCH_TYPES.map(item => (
-          <View
-            className={`padding ${item.value === query.sort ? 'text-red' : null}`}
-            key={item.value}
-            onClick={() => {
-              setQuery({
-                ...query,
-                page_no: 1,
-                sort: item.value
-              })
+      {!!items.length && (
+        <React.Fragment>
+          <View className='grid col-3 bg-white text-center solid-bottom'>
+            {SEARCH_TYPES.map(item => (
+              <View
+                className={`padding ${item.value === sort ? 'text-red' : null}`}
+                key={item.value}
+                onClick={() => {
+                  setQuery({
+                    ...query,
+                    page_no: 1,
+                    sort: item.value
+                  })
+                }}
+              >{item.name}</View>
+            ))}
+          </View>
+          <View style={{ height: 'calc(100% - 100rpx)', position: 'relative' }}>
+            <ScrollView
+              ref={SCROLLVIEWREF}
+              dataInfo={dataInfo}
+              onScrollToLower={() => {
+                if (!IS_REQUEST_PADDING) {
+                  setQuery({
+                    ...query,
+                    page_no: page_no + 1
+                  })
+                }
+              }}
+            />
+          </View>
+        </React.Fragment>
+      )}
+      {!items.length && !!q && !IS_REQUEST_PADDING && !hasMore && (
+        <View
+          className='flex justify-center align-center'
+          style={{
+            height: '100%',
+            flexDirection: 'column'
+          }}
+        >
+          <Image
+            src={IMG_BASE_PATH + '/noData.svg'}
+            style={{
+              width: '400rpx',
+              height: '400rpx'
             }}
-          >{item.name}</View>
-        ))}
-      </View>
-      <View style={{ height: '100%', position: 'relative' }}>
-        <ScrollView dataInfo={dataInfo} />
-      </View>
+          />
+          <Text className='text-gray'>暂无数据</Text>
+        </View>
+      )}
     </Layout>
   )
 }

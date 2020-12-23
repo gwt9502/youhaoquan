@@ -1,7 +1,6 @@
 import Cache from '../utils/cache'
 import { http } from '../utils/http'
 import Taro from '@tarojs/taro'
-import GoodsListState from '../state/GoodsListState'
 class GoodsList {
   constructor(materialId) {
     this.materialId = materialId
@@ -46,7 +45,6 @@ class GoodsList {
       })
       .then(res => {
         const { items = [], hasMore } = res
-        GoodsListState.setGoodsList(items)
         this.moreParams.page_no++
         this.items = isRefresh ? items : [...this.items, ...items]
         this.hasMore = hasMore
