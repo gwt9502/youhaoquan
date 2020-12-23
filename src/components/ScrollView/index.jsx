@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useImperativeHandle, forwardRef, useState } from 'react'
 import { ScrollView, View } from '@tarojs/components'
 import GoodsItem from '../GoodsItem'
 import Footer from '../Footer'
@@ -16,16 +16,23 @@ function ScrollViewCom({
   onScrollToUpper,
   onScrollToLower,
   materialId,
-}) {
-  const SCROLLVIEWREF = useRef(null)
+}, ref) {
+  const [scrollTop, setScrollTop] = useState(0)
+  const scrollViewRef = useRef(null)
+  useImperativeHandle(ref, () => ({
+    scrollTop: val => {
+      setScrollTop(val)
+    }
+  }))
   return (
     <ScrollView
       scrollY
       enableBackToTop
+      scrollTop={scrollTop}
       onScrollToUpper={onScrollToUpper}
       onScrollToLower={onScrollToLower}
       style={style}
-      ref={SCROLLVIEWREF}
+      ref={scrollViewRef}
     >
       <View className='cu-card article no-card'>
         {dataInfo.items.map(goods => <GoodsItem key={goods.item_id} {...goods} materialId={materialId} />)}
@@ -38,4 +45,4 @@ function ScrollViewCom({
   )
 }
 
-export default React.memo(ScrollViewCom)
+export default React.memo(forwardRef(ScrollViewCom))

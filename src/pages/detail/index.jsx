@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { View, Swiper, SwiperItem, Image, Button, Text } from '@tarojs/components'
-import { setClipboardData, switchTab, getCurrentInstance, useShareAppMessage, showToast } from '@tarojs/taro'
+import { setClipboardData, switchTab, getCurrentInstance, useShareAppMessage } from '@tarojs/taro'
 import GoodsListState from '@/state/GoodsListState'
 import Layout from '@/components/Layout'
 import CardGoodsItem from '@/components/CardGoodsItem'
@@ -158,7 +158,7 @@ function GoodsDetail() {
                 <Text className='text-lg text-bold text-red'>相关推荐</Text>
               </View>
               <View className='grid col-2'>
-                {sameGoodsList.map(item => <CardGoodsItem key={item.item_id} {...item} materialId={materialId} />)}
+                {sameGoodsList.map(goods => <CardGoodsItem key={goods.item_id} {...goods} materialId={materialId} />)}
               </View>
             </View>) : (
               <View className='padding-lg cu-load loading'></View>

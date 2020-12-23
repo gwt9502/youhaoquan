@@ -4,7 +4,7 @@ import Layout from '@/components/Layout'
 import SearchCom from '@/components/Search'
 import ScrollView from '@/components/ScrollView'
 import { http } from '@/utils/http'
-import Taro, { pageScrollTo } from '@tarojs/taro'
+import Taro from '@tarojs/taro'
 import { IMG_BASE_PATH } from '../../utils/config'
 
 let IS_REQUEST_PADDING = false
@@ -43,6 +43,7 @@ function Search() {
       Taro.showLoading({
         title: '加载中...'
       })
+      SCROLLVIEWREF.current?.scrollTop(-100)
     }
     IS_REQUEST_PADDING = true
     http({
@@ -74,7 +75,8 @@ function Search() {
               setQuery({
                 ...query,
                 q: value.trim(),
-                page_no: 1
+                page_no: 1,
+                sort: null,
               })
             }
           }}
